@@ -42,7 +42,7 @@ def delay(msTime):
     Example:
         delay(500);   - Delay the script for 500 milliseconds.
     """
-    time.sleep(msTime/1000);
+    time.sleep(msTime/1000.0);
     
 def micros():
     """
