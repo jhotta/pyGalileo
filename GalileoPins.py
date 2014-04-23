@@ -558,10 +558,11 @@ class GalileoPins:
                 print("Valid values are between 0 and 255.\n");
                 return -1;
             dutyCycle = int(round(((PERIOD*value)/255),0));
-            if(DEBUG): print("Duty Cycle: " + str(dutyCycle) + " Value: " + str(value) + " Percentage:" + str(round((dutyCycle/PERIOD)*100 ,0)));
+            if(DEBUG): print("Duty Cycle: " + str(dutyCycle) + " Value: " + str(value) + " Percentage:" + str(round((dutyCycle/float(PERIOD))*100 ,0)))
 
             #we need to turn off the digital driver for this pin so the PWM drive will work
-            self._value.write("0");
+            self._value.write("0")
+            self._value.seek(0)
             #self._value.close();
             #There is a bug in the 0.7.5 firmware that requires the drive value to be set to strong
             '''if(waBug075):
@@ -606,6 +607,9 @@ class GalileoPins:
                 if(int(read) != dutyCycle):
                     print("ERROR: Tried to set duty cycle for PWM pin " + str(self.name) + " but directory /sys/class/pwm/pwmchip0/pwm" + self._pwmPin + "/duty_cycle returned a value of: " + read);
                     return -1;
+            #we need to turn on the gpio pin so that the PWM become operation
+            self._value.write("1")
+            self._value.seek(0)
             return 0;
 
         def __str__(self):
